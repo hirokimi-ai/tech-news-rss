@@ -21,7 +21,6 @@ ars-ai      | ai | en | Ars Technica AI   | https://arstechnica.com/ai/feed/
 decoder     | ai | en | The Decoder       | https://the-decoder.com/feed/
 hf          | ai | en | Hugging Face Blog | https://huggingface.co/blog/feed.xml
 simonw      | ai | en | Simon Willison    | https://simonwillison.net/atom/everything/
-importai    | ai | en | Import AI         | https://importai.substack.com/feed
 itm-ai      | ai | ja | ITmedia AI+       | https://rss.itmedia.co.jp/rss/2.0/aiplus.xml
 
 # ---- テック全般 ----
