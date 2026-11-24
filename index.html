@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tech RSS">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111113" media="(prefers-color-scheme: dark)">
+<title>Tech News RSS</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232563eb'/><circle cx='28' cy='72' r='9' fill='white'/><path d='M20 44a36 36 0 0 1 36 36h-12a24 24 0 0 0-24-24z M20 20a60 60 0 0 1 60 60h-12a48 48 0 0 0-48-48z' fill='white'/></svg>">
+<style>
+:root {
+  --bg: #f5f5f4; --surface: #fff; --text: #18181b; --muted: #6b6b73; --line: #e4e4e0;
+  --accent: #2563eb; --chip: #ececea; --read: #a1a1aa;
+  --apple: #52525b; --ai: #7c3aed; --tech: #0891b2;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111113; --surface: #1b1b1f; --text: #ececef; --muted: #9a9aa4; --line: #2c2c32;
+    --accent: #60a5fa; --chip: #26262c; --read: #62626a;
+    --apple: #a1a1aa; --ai: #a78bfa; --tech: #22d3ee;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Helvetica Neue", sans-serif;
+  -webkit-text-size-adjust: 100%; }
+header { position: sticky; top: 0; z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line);
+  padding-top: env(safe-area-inset-top); }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+.top { display: flex; align-items: center; gap: 10px; padding-top: 12px; flex-wrap: wrap; }
+h1 { margin: 0; font-size: 18px; }
+.updated { color: var(--muted); font-size: 12px; }
+.updated.stale { color: #dc2626; }
+.btn { font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--text); cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.top .btn:first-of-type { margin-left: auto; }
+nav { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-top: 6px; }
+nav::-webkit-scrollbar { display: none; }
+nav button { flex: none; border: 0; background: none; color: var(--muted); font: inherit; font-size: 14px;
+  padding: 8px 12px 10px; cursor: pointer; border-bottom: 3px solid transparent; }
+nav button.on { color: var(--text); font-weight: 600; border-bottom-color: var(--accent); }
+nav small { font-size: 11px; margin-left: 3px; color: var(--muted); font-weight: 400; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding: 10px 0 12px; }
+.seg { display: inline-flex; background: var(--chip); border-radius: 8px; padding: 2px; }
+.seg button { border: 0; background: none; color: var(--muted); font: inherit; font-size: 13px; padding: 4px 10px;
+  border-radius: 6px; cursor: pointer; }
+.seg button.on { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+input[type=search], select { font: inherit; font-size: 14px; padding: 5px 10px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--text); border-radius: 8px; max-width: 100%; }
+input[type=search] { flex: 1; min-width: 150px; }
+label.chk { font-size: 13px; color: var(--muted); display: inline-flex; gap: 4px; align-items: center; cursor: pointer; }
+main { padding-bottom: 48px; }
+.item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.item .body { flex: 1; min-width: 0; }
+.meta { font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.src { font-weight: 600; color: var(--text); }
+.cat { font-size: 10px; font-weight: 700; letter-spacing: .04em; padding: 0 6px; border-radius: 4px;
+  border: 1px solid currentColor; }
+.cat.apple { color: var(--apple); } .cat.ai { color: var(--ai); } .cat.tech { color: var(--tech); }
+a.title { display: block; color: var(--text); text-decoration: none; font-weight: 600; font-size: 16px;
+  margin: 3px 0; overflow-wrap: anywhere; }
+a.title:hover { color: var(--accent); }
+.item.read a.title { color: var(--read); font-weight: 500; }
+.item.read .thumb { opacity: .5; }
+.desc { color: var(--muted); font-size: 13px; display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.thumb { flex: none; width: 120px; height: 72px; border-radius: 6px; object-fit: cover; background: var(--chip); }
+@media (max-width: 560px) {
+  .thumb { width: 80px; height: 54px; }
+  .desc { -webkit-line-clamp: 1; }
+  a.title { font-size: 15px; }
+}
+.empty { color: var(--muted); padding: 40px 0; text-align: center; }
+.more { display: block; margin: 20px auto; }
+.status { font-size: 12px; color: var(--muted); padding: 12px 0 calc(24px + env(safe-area-inset-bottom)); }
+.status b { color: #dc2626; font-weight: 600; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+  background: var(--text); color: var(--bg); font-size: 13px; padding: 8px 14px; border-radius: 8px;
+  opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 10; }
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <h1>Tech News RSS</h1>
+      <span class="updated" id="updated"></span>
+      <button class="btn" id="markAll" title="表示中の記事をすべて既読にする">すべて既読</button>
+      <button class="btn primary" id="reload">再読み込み</button>
+    </div>
+    <nav id="tabs"></nav>
+  </div>
+</header>
+<div class="wrap">
+  <div class="filters">
+    <div class="seg" id="lang">
+      <button data-v="all" class="on">すべて</button><button data-v="ja">日本語</button><button data-v="en">英語</button>
+    </div>
+    <select id="source" aria-label="サイト"></select>
+    <input type="search" id="q" placeholder="キーワードで絞り込み" aria-label="検索">
+    <label class="chk"><input type="checkbox" id="unread"> 未読のみ</label>
+  </div>
+  <main id="list"></main>
+  <div class="status" id="status"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="data.js"></script>
+<script>
+const CATS = [["all", "すべて"], ["apple", "Apple"], ["ai", "AI"], ["tech", "テック"]];
+const CAT_LABEL = { apple: "APPLE", ai: "AI", tech: "TECH" };
+const PAGE = 60;
+const $ = (id) => document.getElementById(id);
+
+const store = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem("tnr." + k)) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem("tnr." + k, JSON.stringify(v)); } catch {} },
+};
+const state = { cat: "all", lang: "all", source: "", q: "", unread: false, shown: PAGE, ...store.get("ui", {}) };
+state.shown = PAGE; state.q = "";
+let read = new Map(Object.entries(store.get("read", {})));  // url -> 既読にした時刻
+let data = window.FEED_DATA || { generated: 0, feeds: [], items: [] };
+let feedById = {};
+
+function saveUi() {
+  const { cat, lang, source, unread } = state;
+  store.set("ui", { cat, lang, source, unread });
+}
+function saveRead() {
+  // 30 日より前に既読にした記事は記録を消して、保存量を抑える
+  const cutoff = Date.now() - 30 * 864e5;
+  for (const [k, t] of read) if (t < cutoff) read.delete(k);
+  store.set("read", Object.fromEntries(read));
+}
+
+function ago(ts) {
+  const s = Date.now() / 1000 - ts;
+  if (s < 60) return "たった今";
+  if (s < 3600) return Math.floor(s / 60) + "分前";
+  if (s < 86400) return Math.floor(s / 3600) + "時間前";
+  if (s < 86400 * 7) return Math.floor(s / 86400) + "日前";
+  const d = new Date(ts * 1000);
+  return `${d.getMonth() + 1}/${d.getDate()}`;
+}
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function toast(msg) {
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast.timer); toast.timer = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+function filtered(ignoreCat) {
+  const q = state.q.trim().toLowerCase();
+  return data.items.filter((it) => {
+    const f = feedById[it.f];
+    if (!f) return false;
+    if (!ignoreCat && state.cat !== "all" && f.cat !== state.cat) return false;
+    if (state.lang !== "all" && f.lang !== state.lang) return false;
+    if (state.source && it.f !== state.source) return false;
+    if (state.unread && read.has(it.l)) return false;
+    if (q && !(it.t + " " + it.d + " " + f.name).toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function renderTabs() {
+  const base = filtered(true);
+  const count = { all: base.length };
+  for (const it of base) { const c = feedById[it.f].cat; count[c] = (count[c] || 0) + 1; }
+  $("tabs").innerHTML = CATS.map(([v, label]) =>
+    `<button data-v="${v}" class="${state.cat === v ? "on" : ""}">${label}<small>${count[v] || 0}</small></button>`
+  ).join("");
+}
+
+function renderSources() {
+  const feeds = data.feeds.filter((f) =>
+    (state.cat === "all" || f.cat === state.cat) && (state.lang === "all" || f.lang === state.lang));
+  if (state.source && !feeds.some((f) => f.id === state.source)) state.source = "";
+  $("source").innerHTML = `<option value="">すべてのサイト</option>` + feeds.map((f) =>
+    `<option value="${esc(f.id)}"${f.id === state.source ? " selected" : ""}>${esc(f.name)}${f.ok ? "" : "（取得失敗）"}</option>`
+  ).join("");
+}
+
+function render() {
+  renderTabs();
+  renderSources();
+  document.querySelectorAll("#lang button").forEach((b) => b.classList.toggle("on", b.dataset.v === state.lang));
+  $("unread").checked = state.unread;
+
+  const list = filtered(false);
+  const view = list.slice(0, state.shown);
+  $("list").innerHTML = view.length ? view.map((it, i) => {
+    const f = feedById[it.f];
+    return `<article class="item${read.has(it.l) ? " read" : ""}" data-i="${i}">
+      <div class="body">
+        <div class="meta"><span class="cat ${f.cat}">${CAT_LABEL[f.cat]}</span><span class="src">${esc(f.name)}</span><span>${ago(it.ts)}</span></div>
+        <a class="title" href="${esc(it.l)}" target="_blank" rel="noopener noreferrer">${esc(it.t)}</a>
+        ${it.d ? `<div class="desc">${esc(it.d)}</div>` : ""}
+      </div>
+      ${it.img ? `<img class="thumb" src="${esc(it.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}
+    </article>`;
+  }).join("") + (list.length > view.length
+    ? `<button class="btn more" id="more">さらに表示（残り ${list.length - view.length} 件）</button>` : "")
+    : `<div class="empty">該当する記事はありません</div>`;
+  renderList.view = view;
+
+  const gen = data.generated ? new Date(data.generated * 1000) : null;
+  const upd = $("updated");
+  upd.textContent = gen ? `更新 ${gen.toLocaleString("ja-JP", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })}` : "";
+  upd.classList.toggle("stale", gen && Date.now() - gen > 3 * 3600e3);
+
+  const bad = data.feeds.filter((f) => !f.ok);
+  $("status").innerHTML = `${data.feeds.length - bad.length}/${data.feeds.length} サイトから ${data.items.length} 件` +
+    (bad.length ? ` ・ <b>取得失敗:</b> ${bad.map((f) => esc(f.name)).join("、")}` : "");
+}
+const renderList = {};
+
+function setData(d) {
+  data = d;
+  feedById = Object.fromEntries(d.feeds.map((f) => [f.id, f]));
+}
+
+async function reload() {
+  const btn = $("reload");
+  btn.disabled = true;
+  try {
+    const r = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    const before = data.generated;
+    setData(d);
+    state.shown = PAGE;
+    render();
+    toast(d.generated > before ? "新しい記事を読み込みました" : "最新の状態です（約30分ごとに自動更新）");
+  } catch {
+    toast("読み込めませんでした。ローカルで開いている場合は python3 fetch.py を実行してください");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ---- イベント ----
+$("tabs").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  state.cat = b.dataset.v; state.shown = PAGE; saveUi(); render(); scrollTo(0, 0);
+});
+$("lang").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  state.lang = b.dataset.v; state.shown = PAGE; saveUi(); render();
+});
+$("source").addEventListener("change", (e) => { state.source = e.target.value; state.shown = PAGE; saveUi(); render(); });
+$("unread").addEventListener("change", (e) => { state.unread = e.target.checked; state.shown = PAGE; saveUi(); render(); });
+let qTimer;
+$("q").addEventListener("input", (e) => {
+  clearTimeout(qTimer);
+  qTimer = setTimeout(() => { state.q = e.target.value; state.shown = PAGE; render(); }, 150);
+});
+$("list").addEventListener("click", (e) => {
+  if (e.target.id === "more") { state.shown += PAGE; render(); return; }
+  const a = e.target.closest("a.title"); if (!a) return;
+  const it = renderList.view[+a.closest(".item").dataset.i];
+  read.set(it.l, Date.now()); saveRead();
+  a.closest(".item").classList.add("read");
+});
+// 中クリック（新しいタブ）でも既読にする
+$("list").addEventListener("auxclick", (e) => {
+  const a = e.target.closest("a.title"); if (!a) return;
+  const it = renderList.view[+a.closest(".item").dataset.i];
+  read.set(it.l, Date.now()); saveRead(); a.closest(".item").classList.add("read");
+});
+$("markAll").addEventListener("click", () => {
+  const list = filtered(false);
+  if (!list.length) return;
+  if (!confirm(`表示中の ${list.length} 件を既読にしますか？`)) return;
+  const now = Date.now();
+  list.forEach((it) => read.set(it.l, now));
+  saveRead(); render(); toast(`${list.length} 件を既読にしました`);
+});
+$("reload").addEventListener("click", reload);
+// 別のアプリから戻ってきたとき、データが 30 分以上古ければ自動で読み直す
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && Date.now() / 1000 - data.generated > 1800 && location.protocol !== "file:") reload();
+});
+
+setData(data);
+render();
+</script>
+</body>
+</html>

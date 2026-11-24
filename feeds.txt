@@ -1,0 +1,41 @@
+# id | カテゴリ(apple/ai/tech) | 言語(ja/en) | 表示名 | フィード URL
+# 行を追加・削除して push すると、次回の自動更新から反映されます
+
+# ---- Apple ----
+macrumors   | apple | en | MacRumors        | https://feeds.macrumors.com/MacRumors-All
+9to5mac     | apple | en | 9to5Mac          | https://9to5mac.com/feed/
+appleinsider| apple | en | AppleInsider     | https://appleinsider.com/rss/news/
+sixcolors   | apple | en | Six Colors       | https://sixcolors.com/feed/
+df          | apple | en | Daring Fireball  | https://daringfireball.net/feeds/main
+macstories  | apple | en | MacStories       | https://www.macstories.net/feed/
+iphonemania | apple | ja | iPhone Mania     | https://iphone-mania.jp/feed/
+macotakara  | apple | ja | Mac Otakara      | https://www.macotakara.jp/rss2.xml
+itm-mobile  | apple | ja | ITmedia Mobile   | https://rss.itmedia.co.jp/rss/2.0/mobile.xml
+apple-jp    | apple | ja | Apple Newsroom   | https://www.apple.com/jp/newsroom/rss-feed.rss
+
+# ---- AI ----
+verge-ai    | ai | en | The Verge AI      | https://www.theverge.com/rss/ai-artificial-intelligence/index.xml
+tc-ai       | ai | en | TechCrunch AI     | https://techcrunch.com/category/artificial-intelligence/feed/
+mittr-ai    | ai | en | MIT Tech Review   | https://www.technologyreview.com/topic/artificial-intelligence/feed
+ars-ai      | ai | en | Ars Technica AI   | https://arstechnica.com/ai/feed/
+decoder     | ai | en | The Decoder       | https://the-decoder.com/feed/
+hf          | ai | en | Hugging Face Blog | https://huggingface.co/blog/feed.xml
+simonw      | ai | en | Simon Willison    | https://simonwillison.net/atom/everything/
+importai    | ai | en | Import AI         | https://importai.substack.com/feed
+itm-ai      | ai | ja | ITmedia AI+       | https://rss.itmedia.co.jp/rss/2.0/aiplus.xml
+
+# ---- テック全般 ----
+verge       | tech | en | The Verge       | https://www.theverge.com/rss/index.xml
+ars         | tech | en | Ars Technica    | https://feeds.arstechnica.com/arstechnica/index
+engadget    | tech | en | Engadget        | https://www.engadget.com/rss.xml
+wired       | tech | en | WIRED           | https://www.wired.com/feed/rss
+techcrunch  | tech | en | TechCrunch      | https://techcrunch.com/feed/
+hn          | tech | en | Hacker News     | https://hnrss.org/frontpage
+techmeme    | tech | en | Techmeme        | https://www.techmeme.com/feed.xml
+itm-news    | tech | ja | ITmedia NEWS    | https://rss.itmedia.co.jp/rss/2.0/news_bursts.xml
+impress     | tech | ja | Impress Watch   | https://www.watch.impress.co.jp/data/rss/1.0/ipw/feed.rdf
+gigazine    | tech | ja | GIGAZINE        | https://gigazine.net/news/rss_2.0/
+publickey   | tech | ja | Publickey       | https://www.publickey1.jp/atom.xml
+wiredjp     | tech | ja | WIRED.jp        | https://wired.jp/feed/rss
+gizmodojp   | tech | ja | ギズモード・ジャパン | https://www.gizmodo.jp/feed/index.xml
+hatena-it   | tech | ja | はてブ テクノロジー | https://b.hatena.ne.jp/hotentry/it.rss
