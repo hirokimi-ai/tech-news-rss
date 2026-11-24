@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 import sys
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
@@ -143,7 +144,12 @@ def download(url):
 
 def fetch(feed):
     try:
-        entries = parse(download(feed["url"]))
+        try:
+            entries = parse(download(feed["url"]))
+        except ET.ParseError:
+            # 転送が途中で切れて XML が壊れることがあるので 1 回だけ取り直す
+            time.sleep(3)
+            entries = parse(download(feed["url"]))
         return feed, entries, None
     except Exception as e:  # noqa: BLE001 — 1 つの失敗で全体を止めない
         return feed, [], f"{type(e).__name__}: {e}"[:160]
